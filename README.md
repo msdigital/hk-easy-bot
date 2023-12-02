@@ -19,26 +19,33 @@ This project is built using:
 
 ## Environment Variables
 To run the HK Easy Bot, you need to set the following environment variables:
-
-- `EASY_API_URI`: The URI of the external API.
-- `EASY_API_KEY`: The API key for accessing the external API.
-- `DISCORD_TOKEN`: The token for your Discord bot.
+- `EASY_API_URI`: The URI of the easyVerein API.
+- `EASY_API_KEY`: The API key for accessing the easyVerein API.
+- `EASY_API_DISCORD_TAG_FIELD`: Id of the Discord Tag CustomField in easyVerein.
+- `EASY_API_GAMER_NAME_FIELD`: Id of the Gamer Name CustomField in easyVerein.
+- `DISCORD_TOKEN`: The token for your Discord Bot.
+- `DISCORD_CLIENT_ID`: The Client Id for your Discord Bot.
+- `DISCORD_GUILD_ID`: The Guild Id of the Discord Server the Bot will work in.
 - `PORT` (optional for development): The port number for the Express server.
 
 ### Setting up Environment Variables
 
 #### Development
 For development, create a `.env` file in the root directory and set the variables like so:
-EASY_API_URI=https://api.example.com/
-EASY_API_KEY=your_api_key
-DISCORD_TOKEN=your_discord_bot_token
-PORT=3000
+- PORT=3000
+- EASY_API_URI=https://api.example.com/
+- EASY_API_KEY=easyVerein_api_key
+- EASY_API_DISCORD_TAG_FIELD=easyVerein_discord_tag_field_id
+- EASY_API_GAMER_NAME_FIELD=easyVerein_gamer_name_field_id
+- DISCORD_TOKEN=discord_bot_token
+- DISCORD_CLIENT_ID=discord_bot_client_id
+- DISCORD_GUILD_ID=discord_server_guild_id252815455096406017
 
 #### Production
 In production, set these variables in your Docker run command or orchestration tool configuration:
-```
-docker run -d -p 3000:3000 -e EASY_API_URI=https://api.example.com/ -e EASY_API_KEY=your_api_key -e DISCORD_TOKEN=your_discord_bot_token hk-easy-bot
-```
+  ```
+  docker run -d -p 3000:3000 -e EASY_API_KEY=your_api_key hk-easy-bot
+  ```
 
 ## Installation and Setup
 
