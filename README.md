@@ -32,14 +32,16 @@ To run the HK Easy Bot, you need to set the following environment variables:
 
 #### Development
 For development, create a `.env` file in the root directory and set the variables like so:
-- PORT=3000
-- EASY_API_URI=https://api.example.com/
-- EASY_API_KEY=easyVerein_api_key
-- EASY_API_DISCORD_TAG_FIELD=easyVerein_discord_tag_field_id
-- EASY_API_GAMER_NAME_FIELD=easyVerein_gamer_name_field_id
-- DISCORD_TOKEN=discord_bot_token
-- DISCORD_CLIENT_ID=discord_bot_client_id
-- DISCORD_GUILD_ID=discord_server_guild_id252815455096406017
+```
+PORT=3000
+EASY_API_URI=https://api.example.com/
+EASY_API_KEY=easyVerein_api_key
+EASY_API_DISCORD_TAG_FIELD=easyVerein_discord_tag_field_id
+EASY_API_GAMER_NAME_FIELD=easyVerein_gamer_name_field_id
+DISCORD_TOKEN=discord_bot_token
+DISCORD_CLIENT_ID=discord_bot_client_id
+DISCORD_GUILD_ID=discord_server_guild_id
+```
 
 #### Production
 In production, set these variables in your Docker run command or orchestration tool configuration:
@@ -85,7 +87,6 @@ For production, use Docker directly:
   ```
   docker run -d -p 3000:3000 -e EASY_API_KEY=your_api_key hk-easy-bot
   ```
-  Replace your_api_key with your actual API key.
 
 ## Contributing
 Contributions to HK Easy Bot are welcome. Please follow these steps to contribute:
