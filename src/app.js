@@ -1,82 +1,27 @@
-require('dotenv').config();
-const express = require('express')
-const axios = require('axios');
-const { Client, GatewayIntentBits, PermissionsBitField } = require('discord.js')
-const { REST } = require('@discordjs/rest');
-const { Routes } = require('discord-api-types/v9');
-const apiHandler = require('./apiHandler');
+// Load environment variables from .env file
+require("dotenv").config();
 
-//Initialize server
+// Import necessary modules
+const express = require("express"); // Express framework for building the web server
+const axios = require("axios"); // Axios for making HTTP requests (unused in this file but might be used later)
+const discordHandler = require("./discordHandler"); // Importing the Discord handler module
+
+// Initialize the Express server
 const app = express();
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
-const rest = new REST({ version: '9' }).setToken(process.env.DISCORD_TOKEN);
 
-// express Middleware
-app.get('/', (req, res) => {
-  res.send('Discord Bot is running');
-})
-
-// Define the slash command
-const commands = [
-  {
-    name: 'updateroles',
-    description: 'Force user role updates',
-  }
-];
-
-// Discord client event handler
-client.once('ready', async () => {
-  client.user.setActivity({ name: 'mit sich selbst!', type: 'PLAYING' });
-  console.log('Connection established as ' + client.user.tag);
-
-  try {
-    await rest.put(
-      Routes.applicationGuildCommands(client.user.id, process.env.DISCORD_GUILD_ID),
-      { body: commands },
-    );
-
-    console.log('Successfully registered application commands.');
-  } catch (error) {
-    console.error('Error registering commands:', error);
-  }
-})
-
-client.on('interactionCreate', async interaction => {
-  if (!interaction.isCommand()) return;
-
-  if (!interaction.member.permissions.has(PermissionsBitField.Flags.ManageRoles)) {
-    // Reply with a message if they don't have permission
-    await interaction.reply({ content: 'You do not have permission to use this command.', ephemeral: true });
-    return;
-  }
-
-  const { commandName } = interaction;
-
-  if (commandName === "updateroles") {
-    await updateRoles();
-    await interaction.reply('Will do, Master!');
-  }
+// Express Middleware setup
+// Define a route handler for the root URL to check if the server is running
+app.get("/", (req, res) => {
+  // Send a response indicating the bot is running
+  res.send("Discord Bot is running");
 });
 
-async function updateRoles() {
-  try {
-    const data = await apiHandler.fetchFromAPI();
-    console.log('should update roles here');
-    //do stuff
-  }
-  catch (error) {
-    console.error('Error in updateRoles:', error);
-  }
-}
+// Log in to Discord with the bot token from environment variables
+discordHandler.login(process.env.DISCORD_TOKEN);
 
-// Update Roles set by an Intervall
-//setInterval(updateRoles, 1000 * 60 * 60);
-
-// Discord client login
-client.login(process.env.DISCORD_TOKEN);
-
-// Start Express server
+// Start the Express server
+// Use the PORT environment variable, or default to 3000 if it's not set
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`Server running on port ${PORT}`); // Log the port the server is running on
 });
