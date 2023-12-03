@@ -3,8 +3,7 @@ require("dotenv").config();
 
 // Import necessary modules
 const express = require("express"); // Express framework for building the web server
-const axios = require("axios"); // Axios for making HTTP requests (unused in this file but might be used later)
-const discordHandler = require("./discordHandler"); // Importing the Discord handler module
+const discordBot = require("./modules/discord/bot");
 
 // Initialize the Express server
 const app = express();
@@ -17,11 +16,12 @@ app.get("/", (req, res) => {
 });
 
 // Log in to Discord with the bot token from environment variables
-discordHandler.login(process.env.DISCORD_TOKEN);
+discordBot.login();
 
 // Start the Express server
 // Use the PORT environment variable, or default to 3000 if it's not set
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`); // Log the port the server is running on
+  // Log the port the server is running on
+  console.log(`Server running on port ${PORT}`);
 });

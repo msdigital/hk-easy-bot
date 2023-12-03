@@ -1,0 +1,12 @@
+[
+  {
+    "name": "updateroles",
+    "description": "Force user role updates",
+    "handler": "updateRolesHandler"
+  },
+  {
+    "name": "healthcheck",
+    "description": "Check the bot's health",
+    "handler": "healthCheckHandler"
+  }
+]

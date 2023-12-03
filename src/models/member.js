@@ -30,8 +30,13 @@ class Member {
    * @returns {string|null} The value of the custom field, or null if not found.
    */
   getCustomFieldValue(customFields, fieldId) {
-    const field = customFields.find((f) => f.customField.id === fieldId);
-    return field ? field.value : null; // Return the value if field is found, else null
+    // Convert fieldId to a number if it's a string
+    const numericFieldId = typeof fieldId === "string" ? parseInt(fieldId, 10) : fieldId;
+
+    const field = customFields.find((f) => f.customField.id === numericFieldId);
+
+    // Return the value if field is found, else null
+    return field ? field.value : null;
   }
 }
 
