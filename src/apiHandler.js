@@ -16,7 +16,7 @@ const API_KEY = process.env.EASY_API_KEY;
  * @param {string} url The URL to fetch data from. Defaults to the constructed API_ENDPOINT.
  * @returns {Promise<Array>} A promise that resolves to an array of results from the API.
  */
-exports.fetchFromApi = async function (url = API_ENDPOINT) {
+exports.fetchFromApi = async function fetchFromApi(url = API_ENDPOINT) {
   try {
     // Performing the API request with Axios
     const response = await axios.get(url, {
@@ -25,20 +25,20 @@ exports.fetchFromApi = async function (url = API_ENDPOINT) {
       },
     });
 
+    let results = response.data.results;
+
     // Check for pagination ('next' property in response)
     if (response.data.next) {
-      console.log("calling next page", response.data.next);
+      console.log("calling", response.data.next);
 
       // Recursive call for the next page
-      const nextResults = await this.fetchFromApi(response.data.next);
-
+      const nextResults = await fetchFromApi(response.data.next);
+      
       // Combining current and next page results
-      return response.data.results.concat(nextResults);
-    } else {
-      // Returning the results from the API
-      console.log("returning results");
-      return response.data.results;
+      results = results.concat(nextResults);
     }
+    // Returning the results from the API
+    return results;
   } catch (error) {
     //Throw error for further handling
     console.error("Error fetching data from API:", error);
