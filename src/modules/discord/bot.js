@@ -1,20 +1,11 @@
 const { Client, GatewayIntentBits, REST, Routes } = require("discord.js");
 const commandConfig = require("./commands.json");
-// const apiHandler = require("./apiHandler");
-const apiHandler = require("./../../apiHandler");
-const Member = require("./../../models/member"); // Adjust the path as needed
+const roleMappings = require('./roleMappings.json');
+const easyVerein = require('../easyVerein/apiHandler')
+const Member = require("./../../models/member");
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 const rest = new REST({ version: "9" }).setToken(process.env.DISCORD_TOKEN);
-
-const defaultDiscordRoleId = "HarleKings";
-
-const groupRoleMapping = {
-  HK1: "Bronze",
-  HK2: "Silber",
-  HK3: "Gold",
-  HK4: "Platin",
-};
 
 client.once("ready", async () => {
   client.user.setActivity({ name: "mit sich selbst!", type: "PLAYING" });
@@ -38,10 +29,10 @@ client.on("interactionCreate", async (interaction) => {
   if (command) {
     switch (commandName) {
       case "updateroles":
-        await updateRolesHandler(interaction);
+        await commandUpdateRoles(interaction);
         break;
       case "healthcheck":
-        await healthCheckHandler(interaction);
+        await commandHealtchcheck(interaction);
         break;
       default:
         await interaction.reply("Ohaa, das habe ich nicht verstanden!");
@@ -50,39 +41,38 @@ client.on("interactionCreate", async (interaction) => {
   }
 });
 
-async function updateRolesHandler (interaction) {
+async function commandUpdateRoles (interaction) {
   await interaction.reply("Will do, Master!");
   await updateRoles();
 };
 
-async function healthCheckHandler (interaction) {
+async function commandHealtchcheck (interaction) {
   await interaction.reply("I'm alive and kicking!");
 }
 
 async function updateRoles() {
   try {
-    apiHandler
+    easyVerein
       .fetchFromApi()
-      .then(response => response.map(memberData => new Member(memberData)))
-      .then(members => {
+      .then((response) => response.map((memberData) => new Member(memberData)))
+      .then((members) => {
         members.forEach((member) => {
-          console.log('check member', member.name);
+          console.log("check member", member.name);
           // skip if member is in no group yet
           if (!member.groups || member.groups.length === 0) {
             return;
           }
 
           // map groups to discord roles
-          const mappedRoles = member.groups.map((group) => groupRoleMapping[group.short] || null).filter((id) => id);
-          mappedRoles.push(defaultDiscordRoleId);
+          const mappedRoles = member.groups.map((group) => roleMappings.mappings[group.short] || null).filter((id) => id);
+          mappedRoles.push(roleMappings.defaultRole);
 
           if (mappedRoles.length > 0 && member.discordTag != null) {
             // update DiscordRole for Member
-            // await updateDiscordRoles(member, mappedRoles);
-            console.log('- roles', mappedRoles);
+            console.log("- roles", mappedRoles);
           } else {
             // skip if no matching discord role was found
-            console.log('- no matching roles')
+            console.log("- no matching roles");
             return;
           }
         });
