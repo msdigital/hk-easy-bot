@@ -1,10 +1,10 @@
 /**
  * Represents a member with various properties extracted and transformed from member data.
+ * This class is used to create a standardized member object from the raw data obtained from an API.
  */
-class Member {
+exports.Member = class {
   /**
    * Constructs a member instance from raw member data.
-   *
    * @param {Object} memberData - Raw data of a member.
    */
   constructor(memberData) {
@@ -24,20 +24,13 @@ class Member {
 
   /**
    * Extracts the value of a custom field by its ID.
-   *
    * @param {Array} customFields - Array of custom fields.
-   * @param {number} fieldId - The ID of the custom field to extract the value from.
+   * @param {number|string} fieldId - The ID of the custom field to extract the value from.
    * @returns {string|null} The value of the custom field, or null if not found.
    */
   getCustomFieldValue(customFields, fieldId) {
-    // Convert fieldId to a number if it's a string
     const numericFieldId = typeof fieldId === "string" ? parseInt(fieldId, 10) : fieldId;
-
     const field = customFields.find((f) => f.customField.id === numericFieldId);
-
-    // Return the value if field is found, else null
     return field ? field.value : null;
   }
 }
-
-module.exports = Member;

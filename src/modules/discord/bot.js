@@ -1,6 +1,7 @@
 const { Client, GatewayIntentBits, REST, Routes } = require("discord.js");
 const commandHandlers = require("./commandHandlers");
 const roleHandlers = require("./roleHandlers");
+const eventManager = require("../../lib/eventManager");
 
 // Initialize the Discord client with necessary intents
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
@@ -15,9 +16,7 @@ client.once("ready", async () => {
   console.log("Connection established as " + client.user.tag);
 
   try {
-    await roleHandlers.updateRoles(); // Call to update roles when bot starts
-    await rest.put(Routes.applicationGuildCommands(client.user.id, process.env.DISCORD_GUILD_ID), { body: await commandHandlers.getCommands() });
-    console.log("Successfully registered application commands.");
+    eventManager.emit('discord:bot:ready');
   } catch (error) {
     console.error("Error registering commands:", error);
   }
@@ -37,10 +36,17 @@ client.on("interactionCreate", async (interaction) => {
   }
 });
 
-/**
- * Login function to be exported and used externally.
- * Initiates the login process for the Discord client.
- */
-exports.login = function () {
-  client.login(process.env.DISCORD_TOKEN);
+eventManager.on("discord:bot:ready", async () => {
+  await rest.put(Routes.applicationGuildCommands(client.user.id, process.env.DISCORD_GUILD_ID), { body: await commandHandlers.getCommands() });
+  console.log("Successfully registered application commands.");
+});
+
+exports.login = async function () {
+  await client.login(process.env.DISCORD_TOKEN);
+};
+
+// Export updateDiscordUserRoles function if needed elsewhere
+exports.updateDiscordUserRoles = async function (users) {
+  console.log("updateDiscordUserRoles");
+  // Logic to update Discord user roles based on provided data
 };

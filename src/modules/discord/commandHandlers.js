@@ -1,10 +1,9 @@
 const commandConfig = require("./commands.json");
-const roleHandlers = require("./roleHandlers");
+const eventManager = require("../../lib/eventManager"); // Ensure the path to eventManager is correct
 
 /**
  * Asynchronously retrieves the list of command configurations.
  * This function returns the command configuration defined in commands.json.
- *
  * @returns {Promise<Object>} A promise that resolves to the command configuration.
  */
 exports.getCommands = async function () {
@@ -17,34 +16,15 @@ exports.getCommands = async function () {
  */
 exports.processCommand = async function (interaction) {
   const { commandName } = interaction;
-  const command = commandConfig.find((cmd) => cmd.name === commandName);
 
-  switch (commandName) {
-    case "updateroles":
-      await commandUpdateRoles(interaction);
-      break;
-    case "healthcheck":
-      await commandHealtchcheck(interaction);
-      break;
-    default:
-      await interaction.reply("Ohaa, das habe ich nicht verstanden!");
-      break;
+  // Check if the command exists in the command configuration
+  const commandExists = commandConfig.some((cmd) => cmd.name === commandName);
+
+  if (commandExists) {
+    // Emit an event using the command name, prefixed with a module identifier
+    eventManager.emit(`discord:command:${commandName}`, interaction);
+  } else {
+    // Handle unknown command
+    await interaction.reply("Ohaa, das habe ich nicht verstanden!");
   }
 };
-
-/**
- * Handler for the 'updateroles' command.
- * @param {Interaction} interaction The interaction object from Discord.js.
- */
-async function commandUpdateRoles(interaction) {
-  await interaction.reply("Updating roles...");
-  await roleHandlers.updateRoles();
-}
-
-/**
- * Handler for the 'healthcheck' command.
- * @param {Interaction} interaction The interaction object from Discord.js.
- */
-async function commandHealtchcheck(interaction) {
-  await interaction.reply("I'm alive and kicking!");
-}

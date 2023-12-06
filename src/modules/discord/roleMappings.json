@@ -1,9 +1,9 @@
 {
+  "defaultRole": "HarleKings",
   "mappings": {
     "HK1": "Bronze",
     "HK2": "Silber",
     "HK3": "Gold",
     "HK4": "Platin"
-  },
-  "defaultRole": "HarleKings"
+  }
 }
