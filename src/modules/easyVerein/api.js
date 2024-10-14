@@ -1,5 +1,5 @@
 const axios = require("axios");
-const Member = require("../../models/member");
+const {Member} = require("../../models/member");
 
 const API_BASE_URL = process.env.EASY_API_URI;
 const API_KEY = process.env.EASY_API_KEY;
@@ -42,6 +42,9 @@ exports.getMembers = async function () {
     results = results.concat(data.results);
     memberURL = data.next ? data.next : null;
   }
+
+  let returnResult = results.map((data) => new Member(data));
+  return returnResult
 
   return results.map((data) => new Member(data));
 };

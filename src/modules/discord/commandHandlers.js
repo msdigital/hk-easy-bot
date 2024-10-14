@@ -1,5 +1,5 @@
 const commandConfig = require("./commands.json");
-const eventManager = require("../../lib/eventManager"); // Ensure the path to eventManager is correct
+const eventManager = require("../../lib/eventManager"); 
 
 /**
  * Asynchronously retrieves the list of command configurations.
@@ -21,6 +21,7 @@ exports.processCommand = async function (interaction) {
   const commandExists = commandConfig.some((cmd) => cmd.name === commandName);
 
   if (commandExists) {
+    console.log(`discord:command:${commandName}`);
     // Emit an event using the command name, prefixed with a module identifier
     eventManager.emit(`discord:command:${commandName}`, interaction);
   } else {

@@ -4,7 +4,7 @@ const roleHandlers = require("./roleHandlers");
 const eventManager = require("../../lib/eventManager");
 
 // Initialize the Discord client with necessary intents
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildMemberManager] });
 const rest = new REST({ version: "9" }).setToken(process.env.DISCORD_TOKEN);
 
 /**
@@ -49,4 +49,5 @@ exports.login = async function () {
 exports.updateDiscordUserRoles = async function (users) {
   console.log("updateDiscordUserRoles");
   // Logic to update Discord user roles based on provided data
+  await roleHandlers.updateRoles(client, users);
 };
