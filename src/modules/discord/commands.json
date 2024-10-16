@@ -1,10 +1,10 @@
 [
   {
     "name": "updateroles",
-    "description": "Force user role updates",
+    "description": "Force user role updates"
   },
   {
     "name": "healthcheck",
-    "description": "Check the bot's health",
+    "description": "Check the bot's health"
   }
 ]
