@@ -1,10 +1,10 @@
 const commandConfig = require("./commands.json");
-const eventManager = require("../../lib/eventManager"); 
+const eventManager = require("../../lib/eventManager");
 
 /**
  * Asynchronously retrieves the list of command configurations.
  * This function returns the command configuration defined in commands.json.
- * @returns {Promise<Object>} A promise that resolves to the command configuration.
+ * @returns {Promise<Object[]>} A promise that resolves to the command configuration.
  */
 exports.getCommands = async function () {
   return commandConfig;
