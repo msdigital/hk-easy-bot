@@ -17,6 +17,15 @@ async function fetchFromApi(url) {
       headers: {
         Authorization: `Token ${API_KEY}`,
       },
+      hooks: {
+		    beforeRetry: [
+			    async ({request, options, error, retryCount}) => {
+				    let refreshURL = `${API_BASE_URL}/refresh-token`;
+            const API_KEY = await fetchFromApi(refreshURL);
+				    request.headers.set('Authorization', `token ${API_KEY}`);
+			      }
+		    ]
+	    }
     });
     return response.data;
   } catch (error) {
