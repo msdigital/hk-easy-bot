@@ -1,0 +1,10 @@
+{
+  "defaultRole": "Basic-Mitglied",
+  "mappings": {
+    "HK0": "Basic-Mitglied",
+    "HK1": "Bronze-Mitglied",
+    "HK2": "Silber-Mitglied",
+    "HK3": "Gold-Mitglied",
+    "HK4": "Platin-Mitglied"
+  }
+}

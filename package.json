@@ -1,0 +1,32 @@
+{
+  "name": "hk-easy-bot",
+  "version": "1.0.0",
+  "description": "Easyverein Discord-Bot for HarleKings",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon -L src/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/msdigital/hk-easy-bot.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/msdigital/hk-easy-bot/issues"
+  },
+  "homepage": "https://github.com/msdigital/hk-easy-bot#readme",
+  "dependencies": {
+    "@discordjs/rest": "^2.2.0",
+    "axios": "^1.6.2",
+    "discord-api-types": "^0.37.65",
+    "discord.js": "^14.14.1",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
