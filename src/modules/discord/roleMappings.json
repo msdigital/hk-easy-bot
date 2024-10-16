@@ -1,9 +1,10 @@
 {
-  "defaultRole": "HarleKings",
+  "defaultRole": "Basic-Mitglied",
   "mappings": {
-    "HK1": "Bronze",
-    "HK2": "Silber",
-    "HK3": "Gold",
-    "HK4": "Platin"
+    "HK0": "Basic-Mitglied",
+    "HK1": "Bronze-Mitglied",
+    "HK2": "Silber-Mitglied",
+    "HK3": "Gold-Mitglied",
+    "HK4": "Platin-Mitglied"
   }
 }
