@@ -4,7 +4,8 @@ const roleHandlers = require("./roleHandlers");
 const eventManager = require("../../lib/eventManager");
 
 // Initialize the Discord client with necessary intents
-const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildMemberManager] });
+// const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildMemberManager] });
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers] });
 const rest = new REST({ version: "9" }).setToken(process.env.DISCORD_TOKEN);
 
 /**
