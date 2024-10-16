@@ -1,5 +1,5 @@
 const commandConfig = require("./commands.json");
-const eventManager = require("../../lib/eventManager"); 
+const eventManager = require("../../lib/eventManager");
 
 /**
  * Asynchronously retrieves the list of command configurations.

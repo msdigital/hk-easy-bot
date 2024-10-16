@@ -4,7 +4,7 @@ require("dotenv").config();
 // Import necessary modules
 const express = require("express"); // Express framework for building the web server
 const orchestrator = require('./modules/orchestrator');
-var process = require("process");
+const process = require("process");
 
 // Initialize the Express server
 const app = express();
@@ -23,10 +23,10 @@ app.listen(PORT, () => {
   // Log the port the server is running on
   console.log(`Server running on port ${PORT}`);
 
-  // Log in to Discord with the bot token from environment variables
-  // discordBot.login();
+  // Initialize the orchestrator to handle bot commands and events
   orchestrator.init();
 
+  // Graceful shutdown on SIGINT
   process.on("SIGINT", () => {
     console.info("Interrupted");
     process.exit(0);

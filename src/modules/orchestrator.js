@@ -12,10 +12,11 @@ exports.init = async function() {
     await interaction.reply("Initiating role update...");
     try {
       const members = await easyVereinApi.getMembers();
-      discordBot.updateDiscordUserRoles(transformMembersToDiscordFormat(members));
+      const transformedMembers = transformMembersToDiscordFormat(members);
+      await discordBot.updateDiscordUserRoles(transformedMembers);
       await interaction.editReply("Roles updated successfully.");
     } catch (error) {
-      console.error("Error during 'discord:updateroles':", error);
+      console.error("Error during 'discord:command:updateroles':", error);
       await interaction.editReply("Failed to update roles.");
     }
   });
@@ -28,8 +29,15 @@ exports.init = async function() {
   });
 }
 
+/**
+ * Transforms members to the format needed for Discord role updates.
+ * @param {Member[]} members - An array of Member instances.
+ * @returns {Object[]} - An array of transformed members for Discord.
+ */
 function transformMembersToDiscordFormat(members) {
-  console.log("transformMembersToDiscordFormat");
-  return members;
-  // Transformation logic
+  console.log("Transforming members to Discord format");
+  return members.map(member => ({
+    discordTag: member.discordTag,
+    roles: member.groups.map(group => group.short)
+  }));
 }
