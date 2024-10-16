@@ -10,16 +10,21 @@ exports.Member = class {
   constructor(memberData) {
     this.id = memberData.id;
     this.memberId = Number(memberData.membershipNumber);
-    this.contactId = memberData.contactDetails.id;
-    this.name = memberData.contactDetails.name;
-    this.username = memberData.emailOrUserName;
+    this.contactId = memberData.contactDetails?.id || null; // Optional Chaining
+    this.name = memberData.contactDetails?.name || "Unknown"; // Standardwert
+    this.username = memberData.emailOrUserName || "Unknown"; // Standardwert
     this.gamerName = this.getCustomFieldValue(memberData.customFields, process.env.EASY_API_GAMER_NAME_FIELD);
     this.discordTag = this.getCustomFieldValue(memberData.customFields, process.env.EASY_API_DISCORD_TAG_FIELD);
-    this.groups = memberData.memberGroups.map((group) => ({
-      short: group.memberGroup.short,
-      name: group.memberGroup.name,
-    }));
-    this.resignationDate = memberData.resignationDate;
+    
+    // Überprüfen, ob memberGroups existiert und ein Array ist
+    this.groups = Array.isArray(memberData.memberGroups)
+      ? memberData.memberGroups.map((group) => ({
+          short: group.memberGroup.short,
+          name: group.memberGroup.name,
+        }))
+      : []; // Standardwert: leeres Array
+
+    this.resignationDate = memberData.resignationDate || null; // Standardwert
   }
 
   /**
@@ -29,8 +34,14 @@ exports.Member = class {
    * @returns {string|null} The value of the custom field, or null if not found.
    */
   getCustomFieldValue(customFields, fieldId) {
+    // Überprüfen, ob customFields definiert und ein Array ist
+    if (!Array.isArray(customFields)) {
+      console.warn(`Custom fields are not defined or not an array.`);
+      return null; // Wenn keine benutzerdefinierten Felder vorhanden sind, gib null zurück
+    }
+
     const numericFieldId = typeof fieldId === "string" ? parseInt(fieldId, 10) : fieldId;
     const field = customFields.find((f) => f.customField.id === numericFieldId);
-    return field ? field.value : null;
+    return field ? field.value : null; // Gib den Wert des benutzerdefinierten Feldes zurück oder null
   }
 }
