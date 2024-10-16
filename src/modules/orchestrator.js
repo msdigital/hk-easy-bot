@@ -2,7 +2,7 @@ const easyVereinApi = require("./easyVerein/api");
 const discordBot = require("./discord/bot");
 const eventManager = require("../lib/eventManager");
 
-exports.init = async function() {
+exports.init = async function () {
   await discordBot.login();
 
   /**
@@ -31,7 +31,7 @@ exports.init = async function() {
 
 /**
  * Transforms members to the format needed for Discord role updates.
- * @param {Member[]} members - An array of Member instances.
+ * @param {Array} members - An array of Member instances.
  * @returns {Object[]} - An array of transformed members for Discord.
  */
 function transformMembersToDiscordFormat(members) {
