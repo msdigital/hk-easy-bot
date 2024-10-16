@@ -3,17 +3,18 @@ const roleMappings = require("./roleMappings.json");
 
 /**
  * Processes and updates roles for a list of members.
+ * @param {Client} client - The Discord client instance.
  * @param {Member[]} members - An array of Member instances to process roles for.
  */
 exports.updateRoles = async function (client, members) {
   const guild = client.guilds.cache.get(process.env.DISCORD_GUILD_ID);
-  console.log('caching started');
+  console.log('Caching started');
+  
   await guild.members.fetch();
-  console.log('chaching done');
+  console.log('Caching done');
 
   for (const member of members) {
-    // await processMemberRoles(member);
-    if (!member.groups || member.groups.length === 0) return;
+    if (!member.groups || member.groups.length === 0) continue;
 
     const mappedRoles = member.groups.map((group) => roleMappings.mappings[group.short]).filter((id) => id);
     mappedRoles.push(roleMappings.defaultRole); // Always include the default role
@@ -22,17 +23,23 @@ exports.updateRoles = async function (client, members) {
     if (mappedRoles.length > 0 && member.discordTag != null) {
       console.log("- Discord:", member.discordTag);
       console.log("- Roles:", mappedRoles);
-      var dcMmember = guild.members.cache.find(m => m.user.tag === member.discordTag);
-      console.log("- DC Member:", dcMember.id);
-      // var discordUserId = guild.members.resolveId(member.discordTag);
-      // console.log('- DC UserId:', discordUserId);
-      // Implement logic to update Discord roles for the member
+      
+      const dcMember = guild.members.cache.find(m => m.user.tag === member.discordTag);
+      if (dcMember) {
+        // Update roles for the Discord member
+        try {
+          await dcMember.roles.set(mappedRoles);
+          console.log(`Updated roles for ${member.name} (${member.discordTag}):`, mappedRoles);
+        } catch (error) {
+          console.error(`Failed to update roles for ${member.name}:`, error);
+        }
+      } else {
+        console.log("- Discord member not found.");
+      }
     } else {
-      console.log("- No matching roles");
-      return;
+      console.log("- No matching roles or Discord tag is null.");
     }
   }
-
 };
 
 /**
@@ -49,9 +56,8 @@ async function processMemberRoles(member) {
   if (mappedRoles.length > 0 && member.discordTag != null) {
     console.log("- Discord:", member.discordTag);
     console.log("- Roles:", mappedRoles);
-    // Implement logic to update Discord roles for the member
+    // Logic to update roles can be implemented here if needed.
   } else {
     console.log("- No matching roles");
-    return;
   }
 }
