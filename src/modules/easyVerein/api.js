@@ -1,5 +1,5 @@
 const axios = require("axios");
-const {Member} = require("../../models/member");
+const { Member } = require("../../models/member");
 
 const API_BASE_URL = process.env.EASY_API_URI;
 const API_KEY = process.env.EASY_API_KEY;
@@ -11,21 +11,12 @@ const API_KEY = process.env.EASY_API_KEY;
  * @returns {Promise<Object>} The response data from the API.
  */
 async function fetchFromApi(url) {
-  console.log("calling easyVerein:", url);
+  console.log("Calling easyVerein:", url);
   try {
     const response = await axios.get(url, {
       headers: {
         Authorization: `Token ${API_KEY}`,
       },
-      hooks: {
-		    beforeRetry: [
-			    async ({request, options, error, retryCount}) => {
-				    let refreshURL = `${API_BASE_URL}/refresh-token`;
-            const API_KEY = await fetchFromApi(refreshURL);
-				    request.headers.set('Authorization', `token ${API_KEY}`);
-			      }
-		    ]
-	    }
     });
     return response.data;
   } catch (error) {
@@ -51,9 +42,6 @@ exports.getMembers = async function () {
     results = results.concat(data.results);
     memberURL = data.next ? data.next : null;
   }
-
-  let returnResult = results.map((data) => new Member(data));
-  return returnResult
 
   return results.map((data) => new Member(data));
 };
