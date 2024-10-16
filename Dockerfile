@@ -3,23 +3,26 @@
 FROM node:18
 
 # Set the working directory in the container
-WORKDIR /usr/src/app
+#WORKDIR /usr/src/app
+WORKDIR /
 
 # Copy package.json and package-lock.json
-COPY package*.json ./
+#COPY package*.json ./
+COPY . /
 
 # Install dependencies in the container
 RUN npm install
 
 # Bundle the source code inside the container
-COPY . .
+#COPY . .
 
 # Make sure the entrypoint script is executable
-RUN chmod +x /usr/src/app/docker-entrypoint.sh
+#RUN chmod +x /usr/src/app/docker-entrypoint.sh
+CMD ["npm","start"]
 # RUN ["chmod", "+x", "/usr/src/app/docker-entrypoint.sh"]
 
 # Make port 3000 available to the world outside the container
 EXPOSE 3000
 
 # Set the entrypoint script as the default command to execute
-ENTRYPOINT ["/usr/src/app/docker-entrypoint.sh"]
+ENTRYPOINT ["/docker-entrypoint.sh"]
