@@ -6,9 +6,5 @@
   {
     "name": "healthcheck",
     "description": "Check the bot's health"
-  },
-  {
-    "name": "processroles",
-    "description": "Process roles for a specified member"
   }
 ]
