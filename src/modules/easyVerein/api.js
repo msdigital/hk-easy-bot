@@ -11,11 +11,11 @@ const API_KEY = process.env.EASY_API_KEY;
  * @returns {Promise<Object>} The response data from the API.
  */
 async function fetchFromApi(url) {
-  console.log("Calling easyVerein:", url);
+  console.log("calling easyVerein:", url);
   try {
     const response = await axios.get(url, {
       headers: {
-        Authorization: `Token ${API_KEY}`,
+        Authorization: `Bearer ${API_KEY}`, // Ändere 'Token' in 'Bearer'
       },
     });
     return response.data;
@@ -24,6 +24,7 @@ async function fetchFromApi(url) {
     throw error;
   }
 }
+
 
 /**
  * Fetches and processes member data from the easyVerein API.
